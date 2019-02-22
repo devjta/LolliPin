@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.omadahealth.lollipin.lib.PinActivity;
+import com.github.omadahealth.lollipin.lib.PinCompatActivity;
 import com.github.omadahealth.lollipin.lib.R;
 import com.github.omadahealth.lollipin.lib.enums.KeyboardButtonEnum;
 import com.github.omadahealth.lollipin.lib.interfaces.KeyboardButtonClickedListener;
@@ -29,7 +30,7 @@ import java.util.List;
  * Call this activity in normal or singleTop mode (not singleTask or singleInstance, it does not work
  * with {@link android.app.Activity#startActivityForResult(android.content.Intent, int)}).
  */
-public abstract class AppLockActivity extends PinActivity implements KeyboardButtonClickedListener, View.OnClickListener, FingerprintUiHelper.Callback {
+public abstract class AppLockCompatActivity extends PinCompatActivity implements KeyboardButtonClickedListener, View.OnClickListener, FingerprintUiHelper.Callback {
 
     public static final String TAG = AppLockActivity.class.getSimpleName();
     public static final String ACTION_CANCEL = TAG + ".actionCancelled";
@@ -42,7 +43,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
     protected ImageView mFingerprintImageView;
     protected TextView mFingerprintTextView;
 
-    protected LockManager mLockManager;
+    protected LockCompatManager mLockManager;
 
 
     protected FingerprintManager mFingerprintManager;
@@ -106,7 +107,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
             mType = extras.getInt(AppLock.EXTRA_TYPE, AppLock.UNLOCK_PIN);
         }
 
-        mLockManager = LockManager.getInstance();
+        mLockManager = LockCompatManager.getInstance();
         mPinCode = "";
         mOldPinCode = "";
 
@@ -144,8 +145,8 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
             mFingerprintManager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
             mFingerprintUiHelper = new FingerprintUiHelper.FingerprintUiHelperBuilder(mFingerprintManager).build(mFingerprintImageView, mFingerprintTextView, this);
             try {
-            if (mFingerprintManager != null && mFingerprintManager.isHardwareDetected() && mFingerprintUiHelper.isFingerprintAuthAvailable()
-                    && mLockManager.getAppLock().isFingerprintAuthEnabled()) {
+                if (mFingerprintManager != null && mFingerprintManager.isHardwareDetected() && mFingerprintUiHelper.isFingerprintAuthAvailable()
+                        && mLockManager.getAppLock().isFingerprintAuthEnabled()) {
                     mFingerprintImageView.setVisibility(View.VISIBLE);
                     mFingerprintTextView.setVisibility(View.VISIBLE);
                     mFingerprintUiHelper.startListening();
@@ -394,7 +395,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
                 mPinCode = "";
                 mPinCodeRoundView.refresh(mPinCode.length());
                 Animation animation = AnimationUtils.loadAnimation(
-                        AppLockActivity.this, R.anim.shake);
+                        AppLockCompatActivity.this, R.anim.shake);
                 mKeyboardView.startAnimation(animation);
             }
         };
@@ -469,7 +470,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
      * @return the number of digits in the PIN
      */
     public int getPinLength() {
-        return AppLockActivity.DEFAULT_PIN_LENGTH;
+        return AppLockCompatActivity.DEFAULT_PIN_LENGTH;
     }
 
     /**
@@ -478,7 +479,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
      *
      * @return the current class extending {@link AppLockActivity}
      */
-    public Class<? extends AppLockActivity> getCustomAppLockActivityClass() {
+    public Class<? extends AppLockCompatActivity> getCustomAppLockActivityClass() {
         return this.getClass();
     }
 }

@@ -157,6 +157,13 @@ public abstract class AppLock {
     public abstract void setLastActiveMillis();
 
     /**
+     * Set the last active time of the app used by {@link #shouldLockSceen(android.app.Activity)}.
+     * Set in {@link com.github.omadahealth.lollipin.lib.interfaces.LifeCycleInterface#onActivityPaused(android.app.Activity)}
+     * and {@link com.github.omadahealth.lollipin.lib.interfaces.LifeCycleInterface#onActivityResumed(android.app.Activity)}
+     */
+    public abstract void setLastActiveTimeMills(long timestamp);
+
+    /**
      * Set the passcode (store his SHA1 into {@link android.content.SharedPreferences}) using the
      * {@link com.github.omadahealth.lollipin.lib.encryption.Encryptor} class.
      */

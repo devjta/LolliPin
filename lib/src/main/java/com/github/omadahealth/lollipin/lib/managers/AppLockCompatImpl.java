@@ -263,6 +263,13 @@ public class AppLockCompatImpl<T extends AppLockCompatActivity> extends AppLock 
     }
 
     @Override
+    public void setLastActiveTimeMills(long timestamp) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putLong(LAST_ACTIVE_MILLIS_PREFERENCE_KEY, timestamp);
+        editor.apply();
+    }
+
+    @Override
     public boolean checkPasscode(String passcode) {
         Algorithm algorithm = Algorithm.getFromText(mSharedPreferences.getString(PASSWORD_ALGORITHM_PREFERENCE_KEY, ""));
 

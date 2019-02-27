@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.UiThread;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
@@ -396,6 +397,7 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
                 Animation animation = AnimationUtils.loadAnimation(
                         AppLockActivity.this, R.anim.shake);
                 mKeyboardView.startAnimation(animation);
+                afterPinFailure(mAttempts - 1);
             }
         };
         runOnUiThread(thread);
@@ -440,6 +442,15 @@ public abstract class AppLockActivity extends PinActivity implements KeyboardBut
      * @param attempts the number of attempts the user has used
      */
     public abstract void onPinFailure(int attempts);
+
+    /**
+     * When the user has failed a pin challenge - after the screen shake animation. It runs at in the UiThread
+     *
+     * @param attempts the number of attempts the user has used
+     */
+    @UiThread
+    public abstract void afterPinFailure(int attempts);
+
 
     /**
      * When the user has succeeded at a pin challenge

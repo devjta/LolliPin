@@ -26,7 +26,7 @@ public class AppLockImpl<T extends AppLockActivity> extends AppLock implements L
     /**
      * The {@link android.content.SharedPreferences} key used to store the password
      */
-    private static final String PASSWORD_PREFERENCE_KEY = "PASSCODE";
+    public static final String PASSWORD_PREFERENCE_KEY = "PASSCODE";
     /**
      * The {@link android.content.SharedPreferences} key used to store the {@link Algorithm}
      */

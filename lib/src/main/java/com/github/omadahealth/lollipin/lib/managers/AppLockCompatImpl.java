@@ -26,7 +26,7 @@ public class AppLockCompatImpl<T extends AppLockCompatActivity> extends AppLock 
     /**
      * The {@link SharedPreferences} key used to store the password
      */
-    private static final String PASSWORD_PREFERENCE_KEY = "PASSCODE";
+    public static final String PASSWORD_PREFERENCE_KEY = "PASSCODE";
     /**
      * The {@link SharedPreferences} key used to store the {@link Algorithm}
      */

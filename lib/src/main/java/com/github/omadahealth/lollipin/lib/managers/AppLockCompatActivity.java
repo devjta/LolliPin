@@ -2,6 +2,7 @@ package com.github.omadahealth.lollipin.lib.managers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -125,7 +126,12 @@ public abstract class AppLockCompatActivity extends PinCompatActivity implements
 
         int logoId = mLockManager.getAppLock().getLogoId();
         ImageView logoImage = ((ImageView) findViewById(R.id.pin_code_logo_imageview));
-        if (logoId != AppLock.LOGO_ID_NONE) {
+        Drawable logoDraw = getLogoDrawable();
+        if(logoDraw != null){
+            logoImage.setVisibility(View.VISIBLE);
+            logoImage.setImageDrawable(logoDraw);
+        }
+        else if (logoId != AppLock.LOGO_ID_NONE) {
             logoImage.setVisibility(View.VISIBLE);
             logoImage.setImageResource(logoId);
         }
@@ -380,6 +386,14 @@ public abstract class AppLockCompatActivity extends PinCompatActivity implements
      */
     public List<Integer> getBackableTypes() {
         return Arrays.asList(AppLock.CHANGE_PIN, AppLock.DISABLE_PINLOCK);
+    }
+
+    /**
+     * Can return a drawable for putting the logo in the main-view
+     * @return
+     */
+    public Drawable getLogoDrawable(){
+        return null;
     }
 
     /**

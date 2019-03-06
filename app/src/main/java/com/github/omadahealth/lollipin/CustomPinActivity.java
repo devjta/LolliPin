@@ -69,6 +69,11 @@ public class CustomPinActivity extends AppLockActivity {
     }
 
     @Override
+    public void afterPinFailure(int attempts) {
+
+    }
+
+    @Override
     public void onPinSuccess(int attempts) {
 
     }

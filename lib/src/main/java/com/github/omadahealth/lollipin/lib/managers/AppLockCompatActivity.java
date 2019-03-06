@@ -274,9 +274,11 @@ public abstract class AppLockCompatActivity extends PinCompatActivity implements
      */
     @Override
     public void onRippleAnimationEnd() {
-        if (mPinCode.length() == this.getPinLength()) {
-            onPinCodeInputed();
-        }
+        //NEVER do any logic depend on animation-End callbacks, as this is not a 100% failsafe way
+        //onPinCodeInputed is called from the method setPinCode
+//        if (mPinCode.length() == this.getPinLength()) {
+//            onPinCodeInputed();
+//        }
     }
 
     /**
@@ -313,7 +315,7 @@ public abstract class AppLockCompatActivity extends PinCompatActivity implements
                     mType = AppLock.ENABLE_PINLOCK;
                     setStepText();
                     setForgotTextVisibility();
-                    onPinCodeError();
+                    onPinCodeError(false); //dont raise the error attempts and call the callbacks
                 }
                 break;
             case AppLock.CHANGE_PIN:
@@ -390,7 +392,17 @@ public abstract class AppLockCompatActivity extends PinCompatActivity implements
      * Run a shake animation when the password is not valid.
      */
     protected void onPinCodeError() {
-        onPinFailure(mAttempts++);
+        onPinCodeError(true);
+    }
+
+    /**
+     * Run a shake animation when the password is not valid.
+     * @param raiseAttempts if attempts and callbacks should be called - while setting up the code it is not needed
+     */
+    protected void onPinCodeError(final boolean raiseAttempts) {
+        if(raiseAttempts) {
+            onPinFailure(mAttempts++);
+        }
         Thread thread = new Thread() {
             public void run() {
                 mPinCode = "";
@@ -398,7 +410,9 @@ public abstract class AppLockCompatActivity extends PinCompatActivity implements
                 Animation animation = AnimationUtils.loadAnimation(
                         AppLockCompatActivity.this, R.anim.shake);
                 mKeyboardView.startAnimation(animation);
-                afterPinFailure(mAttempts - 1);
+                if(raiseAttempts) {
+                    afterPinFailure(mAttempts - 1);
+                }
             }
         };
         runOnUiThread(thread);
@@ -416,6 +430,9 @@ public abstract class AppLockCompatActivity extends PinCompatActivity implements
     public void setPinCode(String pinCode) {
         mPinCode = pinCode;
         mPinCodeRoundView.refresh(mPinCode.length());
+        if (mPinCode.length() == this.getPinLength()) {
+            onPinCodeInputed();
+        }
     }
 
 

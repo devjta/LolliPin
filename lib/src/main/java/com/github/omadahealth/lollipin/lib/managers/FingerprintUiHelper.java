@@ -201,7 +201,7 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
         mErrorTextView.removeCallbacks(mResetErrorTextRunnable);
         mIcon.setImageResource(R.drawable.ic_fingerprint_success);
         mErrorTextView.setTextColor(
-                mErrorTextView.getResources().getColor(R.color.success_color, null));
+                mErrorTextView.getResources().getColor(R.color.custom_text_color, null));
         mErrorTextView.setText(
                 mErrorTextView.getResources().getString(R.string.pin_code_fingerprint_success));
         mIcon.postDelayed(new Runnable() {
@@ -283,7 +283,7 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
      */
     private void showError(CharSequence error) {
         mIcon.setImageResource(R.drawable.ic_fingerprint_error);
-        mErrorTextView.setText(error);
+        mErrorTextView.setText(error.toString().trim());
         mErrorTextView.setTextColor(
                 mErrorTextView.getResources().getColor(R.color.warning_color, null));
         mErrorTextView.removeCallbacks(mResetErrorTextRunnable);
@@ -297,7 +297,7 @@ public class FingerprintUiHelper extends FingerprintManager.AuthenticationCallba
         @Override
         public void run() {
             mErrorTextView.setTextColor(
-                    mErrorTextView.getResources().getColor(R.color.hint_color, null));
+                    mErrorTextView.getResources().getColor(R.color.custom_text_color, null));
             mErrorTextView.setText(
                     mErrorTextView.getResources().getString(R.string.pin_code_fingerprint_text));
             mIcon.setImageResource(R.drawable.ic_fp_40px);
